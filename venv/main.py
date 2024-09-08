@@ -1,5 +1,6 @@
 import asyncio
 from datetime import datetime
+import json
 
 from aiogram import Bot, Dispatcher
 from aiogram.filters import Command
@@ -26,7 +27,9 @@ async def start(message: Message):
         case 17 | 18 | 19 | 20 | 21 | 22 | 23:
             greeting = 'Добрый вечер'
 
-    await message.answer(f'{greeting}! Этот бот поможет вам освоится в новой школе или чувствовать увереннее в привычной обстановке')
+    await message.answer(
+        f'{greeting}! Этот бот поможет вам освоится в новой школе или чувствовать увереннее в привычной обстановке'
+    )
 
 
 async def main():
