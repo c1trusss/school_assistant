@@ -28,13 +28,9 @@ async def start(message: Message):
             greeting = 'Добрый вечер'
 
     await message.answer(
-        f'{greeting}! Этот бот поможет вам освоится в новой школе или чувствовать увереннее в привычной обстановке'
+        f'{greeting}! Этот бот поможет вам освоится в новой школе или чувствовать себя увереннее в привычной обстановке'
     )
 
 
-async def main():
-    await dp.start_polling()
-
-
 if __name__ == '__main__':
-    asyncio.run(main())
+    dp.run_polling(bot, skip_updates=True)
