@@ -10,6 +10,7 @@ from aiogram.enums.parse_mode import ParseMode
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 from aiogram.filters import Command
 
+from admin import add_user
 from config import TOKEN
 from keyboards import *
 
@@ -20,6 +21,11 @@ dp = Dispatcher()
 
 @dp.message(lambda message: message.text in ['/start', 'Назад', 'Меню', 'Главное меню', 'Назад ↩️'])
 async def start(message: Message):
+
+    user_id = message.from_user.id
+    name = message.from_user.username
+
+    add_user(user_id, name)
 
     greeting = ''
     match datetime.now().hour:
