@@ -1,3 +1,4 @@
+from aiogram import F
 from aiogram.types import *
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
@@ -28,4 +29,4 @@ async def actions(message: Message):
 
 
 def register_handlers_actions():
-    dp.message.register(actions, lambda message: message.text == 'Мероприятия 📌')
+    dp.message.register(actions, F.text == 'Мероприятия 📌')
