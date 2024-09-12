@@ -10,13 +10,11 @@ from aiogram.enums.parse_mode import ParseMode
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 from aiogram.filters import Command
 
+from actions import register_handlers_actions
 from admin import add_user
+from bot import bot, dp
 from config import TOKEN
 from keyboards import *
-
-
-bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
-dp = Dispatcher()
 
 
 @dp.message(lambda message: message.text in ['/start', 'Назад', 'Меню', 'Главное меню', 'Назад ↩️'])
@@ -38,12 +36,15 @@ async def start(message: Message):
         case 17 | 18 | 19 | 20 | 21 | 22 | 23:
             greeting = 'Добрый вечер'
 
-
     await message.answer(
         f'{greeting}! Этот бот поможет вам освоится в новой школе или чувствовать себя увереннее в привычной '
         f'обстановке',
         reply_markup=main_menu_keyboard().as_markup(resize_keyboard=True)
     )
+
+
+# Мероприятия
+register_handlers_actions()
 
 
 @dp.message(F.text == 'Школа 🏫')
