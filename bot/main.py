@@ -38,7 +38,6 @@ async def start(message: Message):
         case 17 | 18 | 19 | 20 | 21 | 22 | 23:
             greeting = 'Добрый вечер'
 
-
     await message.answer(
         f'{greeting}! Этот бот поможет вам освоится в новой школе или чувствовать себя увереннее в привычной '
         f'обстановке',
