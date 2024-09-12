@@ -15,6 +15,7 @@ from admin import add_user
 from bot import bot, dp
 from config import TOKEN
 from keyboards import *
+from petitions import register_handlers_petitions
 
 
 @dp.message(lambda message: message.text in ['/start', 'Назад', 'Меню', 'Главное меню', 'Назад ↩️'])
@@ -46,6 +47,8 @@ async def start(message: Message):
 # Мероприятия
 register_handlers_actions()
 
+# Петиции
+register_handlers_petitions()
 
 @dp.message(F.text == 'Школа 🏫')
 async def school_menu(message: Message):
