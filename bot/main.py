@@ -50,6 +50,7 @@ register_handlers_actions()
 # Петиции
 register_handlers_petitions()
 
+
 @dp.message(F.text == 'Школа 🏫')
 async def school_menu(message: Message):
 
