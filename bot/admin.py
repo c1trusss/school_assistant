@@ -76,6 +76,28 @@ def change_status(file_type: Literal['action', 'petition'], name: str, status: s
         json.dump(data, outfile, indent=2, ensure_ascii=False)
 
 
+def get_active_actions(file_type: Literal['actions', 'petitions']) -> list:
+
+    """
+    :param file_type: тип активности
+    :return: Список активных мероприятий
+    """
+
+    file_name = f'{file_type}.json'
+
+    with open(file_name, 'r', encoding='utf-8') as file:
+        data = json.load(file)
+
+    new_data = []
+
+    for action in data:
+        if data[action]["status"] == 'active':
+            data[action]["name"] = action
+            new_data.append(data[action])
+
+    return new_data
+
+
 async def approve_action(call: CallbackQuery):
 
     data = call.message.text.strip().split()
