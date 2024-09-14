@@ -5,22 +5,28 @@ import logging
 
 from aiogram import Bot, Dispatcher, F
 from aiogram.client.default import DefaultBotProperties
+from aiogram.filters import StateFilter
+from aiogram.fsm.context import FSMContext
 from aiogram.types import *
 from aiogram.enums.parse_mode import ParseMode
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
-from aiogram.filters import Command
+from aiogram.fsm.state import default_state
 
-from admin import add_user
+from actions import register_handlers_actions
+from admin import add_user, register_handlers_admin
+from bot import bot, dp
 from config import TOKEN
 from keyboards import *
+from petitions import register_handlers_petitions
 
 
-bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
-dp = Dispatcher()
+@dp.message(
+    lambda message: message.text in ['/start', 'Назад', 'Меню', 'Главное меню', 'Назад ↩️'],
+    StateFilter(default_state)
+)
+async def start(message: Message, state: FSMContext):
 
-
-@dp.message(lambda message: message.text in ['/start', 'Назад', 'Меню', 'Главное меню', 'Назад ↩️'])
-async def start(message: Message):
+    await state.clear()
 
     user_id = message.from_user.id
     name = message.from_user.username
@@ -43,6 +49,15 @@ async def start(message: Message):
         f'обстановке',
         reply_markup=main_menu_keyboard().as_markup(resize_keyboard=True)
     )
+
+# Функции администратора
+register_handlers_admin()
+
+# Мероприятия
+register_handlers_actions()
+
+# Петиции
+register_handlers_petitions()
 
 
 @dp.message(F.text == 'Школа 🏫')
