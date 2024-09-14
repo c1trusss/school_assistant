@@ -6,3 +6,4 @@ class AddActionStates(StatesGroup):
     action_name = State()
     action_date = State()
     action_description = State()
+    contact = State()
