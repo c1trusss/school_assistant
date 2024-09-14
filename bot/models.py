@@ -29,3 +29,18 @@ class User:
             self.admin = eval(user_info["admin"])
             self.sub = eval(user_info["sub"])
 
+
+class Action:
+
+    def __init__(self, name):
+        with open('actions.json', 'r', encoding='utf-8') as file:
+            data = json.load(file)
+
+        if name not in data:
+            raise ValueError('Активность не найдена в базе данных')
+
+        self.name = name
+        self.date = data[name]["date"]
+        self.description = data[name]["description"]
+        self.contact = data[name]["contact"]
+        self.creator = data[name]["creator"]
