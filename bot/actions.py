@@ -11,7 +11,9 @@ from keyboards import main_menu_keyboard
 from states import AddActionStates
 
 
-async def actions(message: Message):
+async def actions(message: Message, state: FSMContext):
+
+    await state.clear()
 
     active_votings_button = KeyboardButton(text='Голосования 📊')
     schedule_button = KeyboardButton(text='Расписание мероприятий 📆')
