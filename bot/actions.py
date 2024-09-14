@@ -219,7 +219,7 @@ async def active_actions_list(feedback: Message | CallbackQuery):
             current_index += 1
 
             action_list = get_active_actions('actions')
-            print(current_index)
+
             action = Action(action_list[current_index]["name"])
 
             action_info = f'''<b>{action.name}</b> ({current_index + 1}/{len(action_list)})
@@ -252,5 +252,7 @@ def register_handlers_actions():
     dp.message.register(add_action_descriprion, StateFilter(AddActionStates.action_description))
     dp.callback_query.register(add_action_contact, F.data == 'skip_contact_actions')
     dp.message.register(add_action_contact, StateFilter(AddActionStates.contact))
+
     dp.message.register(active_actions_list, F.text == 'Расписание мероприятий 📆')
     dp.callback_query.register(active_actions_list, lambda call: call.data in ['next_actions', 'prev_actions'])
+
