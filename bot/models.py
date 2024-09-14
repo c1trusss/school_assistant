@@ -36,7 +36,7 @@ class Action:
         with open('actions.json', 'r', encoding='utf-8') as file:
             data = json.load(file)
 
-        if name not in data:
+        if name not in data.keys():
             raise ValueError('Активность не найдена в базе данных')
 
         self.name = name
