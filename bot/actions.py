@@ -133,7 +133,7 @@ async def add_action_contact(feedback: Message, state: FSMContext):
     admin_kb.row(approve, deny, width=1)
 
     for id in ADMIN_IDS:
-        await bot.send_message(id, notice_text)
+        await bot.send_message(id, notice_text, reply_markup=admin_kb.as_markup())
 
     await feedback.answer(
         'Готово! После модерации ваше предложение будет опубликовано и допущено к голосованию',
@@ -143,7 +143,7 @@ async def add_action_contact(feedback: Message, state: FSMContext):
 
 def register_handlers_actions():
 
-    dp.message.register(actions, F.text == 'Мероприятия 📌')
+    dp.message.register(actions, lambda message: message.text in ['Мероприятия 📌', 'К мероприятиям ↩️'])
 
     dp.message.register(add_action, F.text == 'Предложить мероприятие 💬')
     dp.message.register(add_action_name, StateFilter(AddActionStates.action_name))
