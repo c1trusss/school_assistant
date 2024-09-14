@@ -45,3 +45,5 @@ class Action:
         self.contact = data[name]["contact"]
         self.status = data[name]["status"]
         self.creator = data[name]["creator"]
+        self.votes_favor = data[name]["votes_favor"]
+        self.votes_against = data[name]["votes_against"]

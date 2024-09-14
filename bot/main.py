@@ -18,6 +18,7 @@ from bot import bot, dp
 from config import TOKEN
 from keyboards import *
 from petitions import register_handlers_petitions
+from school import register_handlers_school
 
 
 @dp.message(
@@ -59,29 +60,8 @@ register_handlers_actions()
 # Петиции
 register_handlers_petitions()
 
-
-@dp.message(F.text == 'Школа 🏫')
-async def school_menu(message: Message):
-
-    lessons_button = KeyboardButton(text='Расписание уроков 📆')
-    rings_button = KeyboardButton(text='Расписание звонков 🔔')
-    food_button = KeyboardButton(text='Столовая 🍽️')
-    main_menu_button = KeyboardButton(text='Назад ↩️')
-
-    keyboard = ReplyKeyboardBuilder()
-    keyboard.row(
-        lessons_button,
-        rings_button,
-        food_button,
-        main_menu_button,
-        width=1
-    )
-
-    await message.answer(
-        'Это раздел с жизнью школы. Здесь вы можете узнать расписание уроков, звонков, а так же меню '
-        'в школьной столовой',
-        reply_markup=keyboard.as_markup(resize_keyboard=True)
-    )
+# Школа
+register_handlers_school()
 
 
 if __name__ == '__main__':
