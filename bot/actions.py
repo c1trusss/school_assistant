@@ -102,7 +102,9 @@ async def add_action_contact(feedback: Message, state: FSMContext):
     action = {
         'date': data["date"],
         'description': data["description"],
-        'status': 'pending'
+        'contact': data["contact"],
+        'status': 'pending',
+        "creator": feedback.from_user.id
     }
 
     add_action_to_db(data["name"], action)
