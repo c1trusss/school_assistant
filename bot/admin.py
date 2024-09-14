@@ -36,3 +36,14 @@ def add_user(id: int, name: str) -> bool:
         json.dump(data, outfile, indent=2, ensure_ascii=False)
 
     return user_exist
+
+
+def add_action_to_db(name: str, description: dict):
+
+    with open('actions.json', 'r', encoding='utf-8') as file:
+        data = json.load(file)
+
+    data[name] = description
+
+    with open('actions.json', 'w', encoding='utf-8') as outfile:
+        json.dump(data, outfile, indent=2, ensure_ascii=False)
