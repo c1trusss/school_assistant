@@ -110,6 +110,20 @@ async def add_action_contact(feedback: Message, state: FSMContext):
 
 <b>Контакт для связи:</b> {data["contact"]}'''
 
+    admin_kb = InlineKeyboardBuilder()
+
+    approve = InlineKeyboardButton(
+        text='Принять ✅',
+        callback_data='approve_action'
+    )
+
+    deny = InlineKeyboardButton(
+        text='Отклонить ❌',
+        callback_data='deny_action'
+    )
+
+    admin_kb.row(approve, deny, width=1)
+
     for id in ADMIN_IDS:
         await bot.send_message(id, notice_text)
 
