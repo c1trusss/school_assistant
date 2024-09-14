@@ -38,9 +38,13 @@ async def actions(message: Message, state: FSMContext):
 
 async def add_action(message: Message, state: FSMContext):
 
-    kb = ReplyKeyboardRemove()
+    kb = ReplyKeyboardBuilder()
 
-    await message.answer('Введите название мероприятия: ', reply_markup=kb)
+    back_button = KeyboardButton(text='К мероприятиям ↩️')
+
+    kb.add(back_button)
+
+    await message.answer('Введите название мероприятия: ', reply_markup=kb.as_markup(resize_keyboard=True))
 
     await state.set_state(AddActionStates.action_name)
 
