@@ -4,8 +4,9 @@ from aiogram.types import *
 from aiogram.fsm.context import FSMContext
 from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
 
-from admin import add_action_to_db
+from admin import add_action_to_db, get_active_actions
 from bot import dp, bot
+from models import Action
 from config import ADMIN_IDS
 from keyboards import main_menu_keyboard
 from states import AddActionStates
@@ -141,6 +142,106 @@ async def add_action_contact(feedback: Message, state: FSMContext):
     )
 
 
+async def active_actions_list(feedback: Message | CallbackQuery):
+
+    kb = InlineKeyboardBuilder()
+
+    btn_favor = InlineKeyboardButton(
+        text='За ✅',
+        callback_data='action_favor'
+    )
+
+    btn_against = InlineKeyboardButton(
+        text='Против ❌',
+        callback_data='action_against'
+    )
+
+    btn_next = InlineKeyboardButton(
+        text='Дальше ➡️',
+        callback_data='next_actions'
+    )
+
+    btn_prev = InlineKeyboardButton(
+        text='⬅️ Назад',
+        callback_data='prev_actions'
+    )
+
+    kb.row(btn_favor, btn_against, btn_next, width=2)
+
+    current_index = 0
+    if isinstance(feedback, CallbackQuery):
+        current_index = int(feedback.message.text[feedback.message.text.index('(') + 1]) - 1
+
+    if not get_active_actions('actions'):
+        await feedback.answer('Сейчас нет запланированных мероприятий 😔🥀‍')
+    elif isinstance(feedback, Message):
+        action_list = get_active_actions('actions')
+        action = Action(action_list[0]["name"])
+
+        action_info = f'''<b>{action.name}</b> (1/{len(action_list)})
+
+Дата проведения: {action.date}
+
+Описание мероприятия: {action.description}'''
+
+        await feedback.answer(action_info, reply_markup=kb.as_markup())
+
+    elif isinstance(feedback, CallbackQuery):
+
+        if feedback.data == 'prev_actions':
+
+            current_index -= 1
+
+            action_list = get_active_actions('actions')
+            action = Action(action_list[current_index]["name"])
+
+            action_info = f'''<b>{action.name}</b> ({current_index + 1}/{len(action_list)})
+
+Дата проведения: {action.date}
+
+Описание мероприятия: {action.description}'''
+
+            kb = InlineKeyboardBuilder()
+
+            if len(get_active_actions('actions')) == 1:
+                kb.row(btn_favor, btn_against, width=2)
+            elif current_index == 0:
+                kb.row(btn_favor, btn_against, btn_next, width=2)
+            elif current_index == len(get_active_actions('actions')) - 1:
+                kb.row(btn_favor, btn_against, btn_prev, width=2)
+            else:
+                kb.row(btn_favor, btn_against, btn_prev, btn_next, width=2)
+
+            await feedback.message.edit_text(action_info, reply_markup=kb.as_markup())
+
+        elif feedback.data == 'next_actions':
+
+            current_index += 1
+
+            action_list = get_active_actions('actions')
+            print(current_index)
+            action = Action(action_list[current_index]["name"])
+
+            action_info = f'''<b>{action.name}</b> ({current_index + 1}/{len(action_list)})
+
+Дата проведения: {action.date}
+
+Описание мероприятия: {action.description}'''
+
+            kb = InlineKeyboardBuilder()
+
+            if len(get_active_actions('actions')) == 1:
+                kb.row(btn_favor, btn_against, width=2)
+            elif current_index == 0:
+                kb.row(btn_favor, btn_against, btn_next, width=2)
+            elif current_index == len(get_active_actions('actions')) - 1:
+                kb.row(btn_favor, btn_against, btn_prev, width=2)
+            else:
+                kb.row(btn_favor, btn_against, btn_prev, btn_next, width=2)
+
+            await feedback.message.edit_text(action_info, reply_markup=kb.as_markup())
+
+
 def register_handlers_actions():
 
     dp.message.register(actions, lambda message: message.text in ['Мероприятия 📌', 'К мероприятиям ↩️'])
@@ -151,3 +252,5 @@ def register_handlers_actions():
     dp.message.register(add_action_descriprion, StateFilter(AddActionStates.action_description))
     dp.callback_query.register(add_action_contact, F.data == 'skip_contact_actions')
     dp.message.register(add_action_contact, StateFilter(AddActionStates.contact))
+    dp.message.register(active_actions_list, F.text == 'Расписание мероприятий 📆')
+    dp.callback_query.register(active_actions_list, lambda call: call.data in ['next_actions', 'prev_actions'])
