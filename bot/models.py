@@ -43,4 +43,5 @@ class Action:
         self.date = data[name]["date"]
         self.description = data[name]["description"]
         self.contact = data[name]["contact"]
+        self.status = data[name]["status"]
         self.creator = data[name]["creator"]
