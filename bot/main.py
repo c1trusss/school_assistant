@@ -13,7 +13,7 @@ from aiogram.utils.keyboard import ReplyKeyboardBuilder
 from aiogram.fsm.state import default_state
 
 from actions import register_handlers_actions
-from admin import add_user
+from admin import add_user, register_handlers_admin
 from bot import bot, dp
 from config import TOKEN
 from keyboards import *
@@ -50,6 +50,8 @@ async def start(message: Message, state: FSMContext):
         reply_markup=main_menu_keyboard().as_markup(resize_keyboard=True)
     )
 
+# Функции администратора
+register_handlers_admin()
 
 # Мероприятия
 register_handlers_actions()
