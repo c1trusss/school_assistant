@@ -84,13 +84,19 @@ async def approve_action(call: CallbackQuery):
 
     action = Action(name)
 
-    if action.
+    match action.status:
+        case 'pending':
 
-    change_status('action', name, 'active')
+            change_status('action', name, 'active')
 
-    await call.answer('Мероприятие одобрено!')
-    await bot.send_message(action.creator, 'Ваше предложение было одобрено!'
-                                           ' Вы можете проголосовать за него в разделе "Голосования".')
+            await call.answer('Мероприятие одобрено!')
+            await bot.send_message(action.creator, 'Ваше предложение было одобрено!'
+                                                   ' Вы можете проголосовать за него в разделе "Голосования".')
+
+        case 'active':
+            await call.answer('Это мероприятие уже одобрено!')
+        case 'denied':
+            await call.answer('Это мероприятие уже отклонено!')
 
 
 async def deny_action(call: CallbackQuery):
@@ -101,11 +107,19 @@ async def deny_action(call: CallbackQuery):
 
     action = Action(name)
 
-    change_status('action', name, 'denied')
+    match action.status:
+        case 'pending':
 
-    await call.answer('Мероприятие отклонено!')
-    await bot.send_message(action.creator, 'К сожалению, ваше предложение было отклонено. За дополнительной '
-                                           'информацией обратитесь в Школьный Ученический Совет (ШУС)')
+            change_status('action', name, 'denied')
+
+            await call.answer('Мероприятие отклонено!')
+            await bot.send_message(action.creator, 'К сожалению, ваше предложение было отклонено. За дополнительной '
+                                                   'информацией обратитесь в Школьный Ученический Совет (ШУС)')
+
+        case 'active':
+            await call.answer('Это мероприятие уже одобрено!')
+        case 'denied':
+            await call.answer('Это мероприятие уже отклонено!')
 
 
 def register_handlers_admin():
