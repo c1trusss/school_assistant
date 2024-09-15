@@ -1,7 +1,38 @@
 {
-  "День самоуправления": {
-    "date": "04.10.2024",
-    "description": "описание",
-    "status": "pending"
+  "ппппп": {
+    "date": "авыававы",
+    "description": "вааываыв",
+    "contact": "-",
+    "status": "active",
+    "creator": 370102440,
+    "votes_favor": 0,
+    "votes_against": 0
+  },
+  "fdfdsfdsf": {
+    "date": "654654645",
+    "description": "hgjgfjhgkl;7777777",
+    "contact": "-",
+    "status": "active",
+    "creator": 370102440,
+    "votes_favor": 0,
+    "votes_against": 0
+  },
+  "fdofdsfds": {
+    "date": "jghjhgjkhg",
+    "description": "4322432532",
+    "contact": "hgfhfg",
+    "status": "active",
+    "creator": 370102440,
+    "votes_favor": 0,
+    "votes_against": 0
+  },
+  "Кружок теле и радиолюбителей": {
+    "date": "Каждый четверг",
+    "description": "Просмотр и обсуждение культовых телепередач и радиосюжетов",
+    "contact": "толя",
+    "status": "active",
+    "creator": 5497053819,
+    "votes_favor": 0,
+    "votes_against": 0
   }
 }
