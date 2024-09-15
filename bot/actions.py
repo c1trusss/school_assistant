@@ -149,12 +149,12 @@ async def active_actions_list(feedback: Message | CallbackQuery):
     kb = InlineKeyboardBuilder()
 
     btn_favor = InlineKeyboardButton(
-        text='За ✅',
+        text='За 👍',
         callback_data='action_favor'
     )
 
     btn_against = InlineKeyboardButton(
-        text='Против ❌',
+        text='Против 👎',
         callback_data='action_against'
     )
 
@@ -175,7 +175,7 @@ async def active_actions_list(feedback: Message | CallbackQuery):
         current_index = int(feedback.message.text[feedback.message.text.index('(') + 1]) - 1
 
     if not get_active_actions('actions'):
-        await feedback.answer('Сейчас нет запланированных мероприятий 😔🥀‍')
+        await feedback.answer('Сейчас нет предложенных мероприятий 😔🥀‍')
     elif isinstance(feedback, Message):
         action_list = get_active_actions('actions')
         action = Action(action_list[0]["name"])
@@ -255,6 +255,6 @@ def register_handlers_actions():
     dp.callback_query.register(add_action_contact, F.data == 'skip_contact_actions')
     dp.message.register(add_action_contact, StateFilter(AddActionStates.contact))
 
-    dp.message.register(active_actions_list, F.text == 'Расписание мероприятий 📆')
+    dp.message.register(active_actions_list, F.text == 'Голосования 📊')
     dp.callback_query.register(active_actions_list, lambda call: call.data in ['next_actions', 'prev_actions'])
 
