@@ -8,7 +8,10 @@
     "votes_favor": [
       370102440
     ],
-    "votes_against": []
+    "votes_against": [
+      309611951,
+      1292940140
+    ]
   },
   "fdfdsfdsf": {
     "date": "654654645",
@@ -17,9 +20,12 @@
     "status": "active",
     "creator": 370102440,
     "votes_favor": [
-      370102440
+      370102440,
+      309611951
     ],
-    "votes_against": []
+    "votes_against": [
+      1292940140
+    ]
   },
   "fdofdsfds": {
     "date": "jghjhgjkhg",
@@ -28,7 +34,10 @@
     "status": "active",
     "creator": 370102440,
     "votes_favor": [],
-    "votes_against": []
+    "votes_against": [
+      309611951,
+      1292940140
+    ]
   },
   "Кружок теле и радиолюбителей": {
     "date": "Каждый четверг",
@@ -36,7 +45,43 @@
     "contact": "толя",
     "status": "active",
     "creator": 5497053819,
+    "votes_favor": [
+      309611951,
+      1292940140
+    ],
+    "votes_against": []
+  },
+  "Танцы": {
+    "date": "12.10.2024",
+    "description": "Танцуем на переменах",
+    "contact": "-",
+    "status": "active",
+    "creator": 309611951,
     "votes_favor": [],
+    "votes_against": [
+      1292940140
+    ]
+  },
+  "Ура": {
+    "date": "13.09.2024",
+    "description": "описание",
+    "contact": "-",
+    "status": "active",
+    "creator": 370102440,
+    "votes_favor": [],
+    "votes_against": [
+      1292940140
+    ]
+  },
+  "Коллективное поедание стрипсов": {
+    "date": "Каждую пятницу",
+    "description": "Весь учительский и ученический состав собирается в актовом зале и ест стрипсы на протяжении 3 часов",
+    "contact": "-",
+    "status": "active",
+    "creator": 1292940140,
+    "votes_favor": [
+      1292940140
+    ],
     "votes_against": []
   }
 }
