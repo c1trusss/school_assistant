@@ -5,13 +5,14 @@
     "contact": "-",
     "status": "active",
     "creator": 370102440,
-    "votes_favor": [
-      370102440
-    ],
+    "votes_favor": [],
     "votes_against": [
       309611951,
-      1292940140
-    ]
+      1292940140,
+      370102440
+    ],
+    "start": "",
+    "end": ""
   },
   "fdfdsfdsf": {
     "date": "654654645",
@@ -25,7 +26,9 @@
     ],
     "votes_against": [
       1292940140
-    ]
+    ],
+    "start": "",
+    "end": ""
   },
   "fdofdsfds": {
     "date": "jghjhgjkhg",
@@ -37,7 +40,9 @@
     "votes_against": [
       309611951,
       1292940140
-    ]
+    ],
+    "start": "",
+    "end": ""
   },
   "Кружок теле и радиолюбителей": {
     "date": "Каждый четверг",
@@ -49,7 +54,9 @@
       309611951,
       1292940140
     ],
-    "votes_against": []
+    "votes_against": [],
+    "start": "",
+    "end": ""
   },
   "Танцы": {
     "date": "12.10.2024",
@@ -57,10 +64,14 @@
     "contact": "-",
     "status": "active",
     "creator": 309611951,
-    "votes_favor": [],
+    "votes_favor": [
+      370102440
+    ],
     "votes_against": [
       1292940140
-    ]
+    ],
+    "start": "",
+    "end": ""
   },
   "Ура": {
     "date": "13.09.2024",
@@ -71,7 +82,9 @@
     "votes_favor": [],
     "votes_against": [
       1292940140
-    ]
+    ],
+    "start": "",
+    "end": ""
   },
   "Коллективное поедание стрипсов": {
     "date": "Каждую пятницу",
@@ -80,8 +93,57 @@
     "status": "active",
     "creator": 1292940140,
     "votes_favor": [
-      1292940140
+      1292940140,
+      370102440
     ],
-    "votes_against": []
+    "votes_against": [],
+    "start": "",
+    "end": ""
+  },
+  "ggfsgfdns": {
+    "date": "19.12.2025",
+    "description": "fdsfsda",
+    "contact": "-",
+    "status": "denied",
+    "creator": 370102440,
+    "votes_favor": [],
+    "votes_against": [],
+    "start": "2025-12-19 00:00:00",
+    "end": "2025-12-29 00:00:00"
+  },
+  ";;;;kkj;jk": {
+    "date": "19.12.2025",
+    "description": "fdsfsdfd",
+    "contact": "-",
+    "status": "active",
+    "creator": 370102440,
+    "votes_favor": [
+      370102440
+    ],
+    "votes_against": [],
+    "start": "2024-09-23 21:14:46.670686",
+    "end": "2024-10-03 21:14:46.670686"
+  },
+  "fdsfdsf": {
+    "date": "19.12.2025",
+    "description": "fdfdsf",
+    "contact": "-",
+    "status": "denied",
+    "creator": 370102440,
+    "votes_favor": [],
+    "votes_against": [],
+    "start": "23-09-24 21:38:22",
+    "end": "03-10-24 21:38:22"
+  },
+  "gfdgsfdg": {
+    "date": "29.09.2024",
+    "description": "fdsfdsfds",
+    "contact": "-",
+    "status": "active",
+    "creator": 370102440,
+    "votes_favor": [],
+    "votes_against": [],
+    "start": "23-09-24 21:45:54",
+    "end": "29-09-24 00:00:00"
   }
 }

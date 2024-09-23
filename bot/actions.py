@@ -4,10 +4,11 @@ from aiogram.filters import StateFilter
 from aiogram.types import *
 from aiogram.fsm.context import FSMContext
 from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
+from datetime import datetime, timedelta
 
 from admin import add_action_to_db, get_active_actions, set_vote
 from bot import dp, bot
-from models import Action
+from models import Action, DateError
 from config import ADMIN_IDS
 from keyboards import main_menu_keyboard
 from states import AddActionStates
@@ -57,13 +58,39 @@ async def add_action_name(message: Message, state: FSMContext):
 
     await message.answer(
         'Теперь введите дату мероприятия в формате ДД.ММ.ГГГГ или частоту мероприятия '
-        '(например, <b>19.12.2025</b> или <b>Каждую пятницу</b>: '
+        '(например, <b>19.12.2025</b> или <b>Каждую пятницу</b>): '
     )
 
     await state.set_state(AddActionStates.action_date)
 
 
 async def add_action_date(message: Message, state: FSMContext):
+
+    now = datetime.now()
+    time = None
+    try:
+        time = datetime.strptime(message.text, '%d.%m.%Y')
+        if time < now:
+            raise DateError('Дата уже прошла!\n\nПопробуйте еще раз ввести дату:')
+    except ValueError:
+        if ''.join(message.text.split('.')).isdigit():
+            await message.answer('Неверный формат даты, попробуйте еще раз '
+                                 '(например, <b>19.12.2025</b> или <b>Каждую пятницу</b>):')
+            await state.set_state(AddActionStates.action_date)
+            return
+    except DateError:
+        await message.answer('Мы сами очень расстроены, но эта дата уже прошла 😔\n\n'
+                             'Попробуйте ввести дату еще раз:')
+        await state.set_state(AddActionStates.action_date)
+        return
+
+    if isinstance(time, datetime):
+        time = min(time - timedelta(days=1), now + timedelta(days=10))
+    else:
+        time = now + timedelta(days=10)
+
+    await state.update_data(start=now.strftime("%d-%m-%y %H:%M:%S"))
+    await state.update_data(end=time.strftime("%d-%m-%y %H:%M:%S"))
 
     await state.update_data(date=message.text)
 
@@ -108,7 +135,9 @@ async def add_action_contact(feedback: Message, state: FSMContext):
         'status': 'pending',
         "creator": feedback.from_user.id,
         "votes_favor": [],
-        "votes_against": []
+        "votes_against": [],
+        "start": str(data["start"]),
+        "end": str(data["end"])
     }
 
     add_action_to_db(data["name"], action)
