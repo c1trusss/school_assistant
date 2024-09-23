@@ -98,6 +98,36 @@ def get_active_actions(file_type: Literal['actions', 'petitions']) -> list:
     return new_data
 
 
+def set_vote(file_type: Literal['actions', 'petitions'], name, user_id: int, vote: bool):
+    """
+    :param file_type: Тип голосования
+    :param name: Имя активности
+    :param user_id: ID пользователя
+    :param vote: Голос (True - за, False - против)
+    :return: None
+    """
+
+    file_name = f'{file_type}.json'
+
+    with open(file_name, 'r', encoding='utf-8') as file:
+        data = json.load(file)
+
+    votes_favor, votes_against = data[name].get('votes_favor'), data[name].get('votes_against')
+
+    if user_id in votes_favor:
+        votes_favor.remove(user_id)
+    elif user_id in votes_against:
+        votes_against.remove(user_id)
+
+    if vote:
+        data[name]['votes_favor'].append(user_id)
+    else:
+        data[name]['votes_against'].append(user_id)
+
+    with open(file_name, 'w', encoding='utf-8') as outfile:
+        json.dump(data, outfile, indent=2, ensure_ascii=False)
+
+
 async def approve_action(call: CallbackQuery):
 
     data = call.message.text.strip().split()

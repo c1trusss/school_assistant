@@ -1,10 +1,11 @@
+import aiogram
 from aiogram import F
 from aiogram.filters import StateFilter
 from aiogram.types import *
 from aiogram.fsm.context import FSMContext
 from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
 
-from admin import add_action_to_db, get_active_actions
+from admin import add_action_to_db, get_active_actions, set_vote
 from bot import dp, bot
 from models import Action
 from config import ADMIN_IDS
@@ -149,12 +150,12 @@ async def active_actions_list(feedback: Message | CallbackQuery):
     kb = InlineKeyboardBuilder()
 
     btn_favor = InlineKeyboardButton(
-        text='За 👍',
+        text=f'За () 👍',
         callback_data='action_favor'
     )
 
     btn_against = InlineKeyboardButton(
-        text='Против 👎',
+        text=f'Против () 👎',
         callback_data='action_against'
     )
 
@@ -186,6 +187,9 @@ async def active_actions_list(feedback: Message | CallbackQuery):
 
 Описание мероприятия: {action.description}'''
 
+        btn_favor.text = f'За ({len(action.votes_favor)}) 👍'
+        btn_against.text = f'Против ({len(action.votes_against)}) 👎'
+
         await feedback.answer(action_info, reply_markup=kb.as_markup())
 
     elif isinstance(feedback, CallbackQuery):
@@ -214,6 +218,9 @@ async def active_actions_list(feedback: Message | CallbackQuery):
             else:
                 kb.row(btn_favor, btn_against, btn_prev, btn_next, width=2)
 
+            btn_favor.text = f'За ({len(action.votes_favor)}) 👍'
+            btn_against.text = f'Против ({len(action.votes_against)}) 👎'
+
             await feedback.message.edit_text(action_info, reply_markup=kb.as_markup())
 
         elif feedback.data == 'next_actions':
@@ -241,7 +248,60 @@ async def active_actions_list(feedback: Message | CallbackQuery):
             else:
                 kb.row(btn_favor, btn_against, btn_prev, btn_next, width=2)
 
+            btn_favor.text = f'За ({len(action.votes_favor)}) 👍'
+            btn_against.text = f'Против ({len(action.votes_against)}) 👎'
+
             await feedback.message.edit_text(action_info, reply_markup=kb.as_markup())
+
+
+async def vote_action(call: CallbackQuery):
+
+    await call.answer('Спасибо! Ваш голос учтён. Чтобы переголосовать, просто отметьте другой вариант.')
+
+    vote = True if call.data == 'action_favor' else False
+
+    name = call.message.text.split('(')[0].strip()
+    set_vote('actions', name, call.from_user.id, vote=vote)
+
+    action_list = get_active_actions('actions')
+    current_index = int(call.message.text[call.message.text.index('(') + 1]) - 1
+    action = Action(action_list[current_index]["name"])
+
+    btn_favor = InlineKeyboardButton(
+        text=f'За ({len(action.votes_favor)}) 👍',
+        callback_data='action_favor'
+    )
+
+    btn_against = InlineKeyboardButton(
+        text=f'Против ({len(action.votes_against)}) 👎',
+        callback_data='action_against'
+    )
+
+    btn_next = InlineKeyboardButton(
+        text='Дальше ➡️',
+        callback_data='next_actions'
+    )
+
+    btn_prev = InlineKeyboardButton(
+        text='⬅️ Назад',
+        callback_data='prev_actions'
+    )
+
+    kb = InlineKeyboardBuilder()
+
+    if len(get_active_actions('actions')) == 1:
+        kb.row(btn_favor, btn_against, width=2)
+    elif current_index == 0:
+        kb.row(btn_favor, btn_against, btn_next, width=2)
+    elif current_index == len(get_active_actions('actions')) - 1:
+        kb.row(btn_favor, btn_against, btn_prev, width=2)
+    else:
+        kb.row(btn_favor, btn_against, btn_prev, btn_next, width=2)
+
+    try:
+        await call.message.edit_reply_markup(reply_markup=kb.as_markup())
+    except aiogram.exceptions.TelegramBadRequest as err:
+        print(err)
 
 
 def register_handlers_actions():
@@ -257,4 +317,6 @@ def register_handlers_actions():
 
     dp.message.register(active_actions_list, F.text == 'Голосования 📊')
     dp.callback_query.register(active_actions_list, lambda call: call.data in ['next_actions', 'prev_actions'])
+
+    dp.callback_query.register(vote_action, lambda call: call.data in ['action_favor', 'action_against'])
 
