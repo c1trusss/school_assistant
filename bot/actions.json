@@ -5,8 +5,8 @@
     "contact": "-",
     "status": "active",
     "creator": 370102440,
-    "votes_favor": 0,
-    "votes_against": 0
+    "votes_favor": [],
+    "votes_against": []
   },
   "fdfdsfdsf": {
     "date": "654654645",
@@ -14,8 +14,8 @@
     "contact": "-",
     "status": "active",
     "creator": 370102440,
-    "votes_favor": 0,
-    "votes_against": 0
+    "votes_favor": [],
+    "votes_against": []
   },
   "fdofdsfds": {
     "date": "jghjhgjkhg",
@@ -23,8 +23,8 @@
     "contact": "hgfhfg",
     "status": "active",
     "creator": 370102440,
-    "votes_favor": 0,
-    "votes_against": 0
+    "votes_favor": [],
+    "votes_against": []
   },
   "Кружок теле и радиолюбителей": {
     "date": "Каждый четверг",
@@ -32,7 +32,7 @@
     "contact": "толя",
     "status": "active",
     "creator": 5497053819,
-    "votes_favor": 0,
-    "votes_against": 0
+    "votes_favor": [],
+    "votes_against": []
   }
 }
