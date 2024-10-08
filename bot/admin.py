@@ -1,9 +1,11 @@
 from datetime import datetime
 import json
 from typing import Literal
+from matplotlib import pyplot as plt
+import numpy as np
 
 from aiogram import F
-from aiogram.types import CallbackQuery
+from aiogram.types import CallbackQuery, Message, FSInputFile
 
 from bot import dp, bot
 from models import Action
@@ -174,8 +176,24 @@ async def deny_action(call: CallbackQuery):
             await call.answer('Это мероприятие уже отклонено!')
 
 
+async def show_plot(message: Message):
+
+    action = Action('fdfdsfdsf')
+    plt.plot()
+    plt.title(f'Голоса за мероприятие {action.name}')
+    plt.bar(['За', 'Против'], [len(action.votes_favor), len(action.votes_against)])
+    plt.yticks(np.arange(0, len(action.votes_favor) + 1, 1))
+    plt.savefig(f'plots/{action.name}.png', dpi=300)
+    await message.answer_photo(
+        FSInputFile(f'plots/{action.name}.png', 'rb'),
+        caption=f'Мероприятия: {action.name}'
+    )
+    plt.show()
+
+
 def register_handlers_admin():
 
     dp.callback_query.register(approve_action, F.data == 'approve_action')
     dp.callback_query.register(deny_action, F.data == 'deny_action')
+    dp.message.register(show_plot, F.text == 'Баблти')
 
