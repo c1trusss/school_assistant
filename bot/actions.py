@@ -89,8 +89,8 @@ async def add_action_date(message: Message, state: FSMContext):
     else:
         time = now + timedelta(days=10)
 
-    await state.update_data(start=now.strftime("%d-%m-%y %H:%M:%S"))
-    await state.update_data(end=time.strftime("%d-%m-%y %H:%M:%S"))
+    await state.update_data(start=now.strftime("%d-%m-%Y %H:%M:%S"))
+    await state.update_data(end=time.strftime("%d-%m-%Y %H:%M:%S"))
 
     await state.update_data(date=message.text)
 
