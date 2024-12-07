@@ -28,7 +28,7 @@ async def school(message: Message):
     )
 
 
-async def lessons(message: Message):
+async def rings(message: Message):
 
     kb = ReplyKeyboardBuilder()
 
@@ -39,21 +39,36 @@ async def lessons(message: Message):
     await message.answer('Здесь вы можете ознакомиться с расписанием звонков. ',
                          reply_markup=kb.as_markup(resize_keyboard=True))
     await message.answer(f'''
-    1 урок: 8:30 - 9:15
-    перемена: 9:15 - 9:25 (10 минут)
-    2 урок: 9:25 - 10:10
-    перемена: 10:10 - 10:30 (20 минут)
-    3 урок: 10:30 - 11:15
-    перемена: 11:15 - 11:35 (20 минут)
-    4 урок: 11:35 - 12:20
-    перемена 12:20 - 12:30 (10 минут)
-    5 урок: 12:30 - 13:15
-    перемена: 13:15 - 13:30 (15 минут)
-    6 урок: 13:30 - 14:15
-    перемена: 14:15 - 14:30 (15 минут)
-    7 урок: 14:30 - 15:15
-    перемена: 15:15 - 15:45 (30 минут)
-    далее внеурочная деятельность''', reply_markup=kb.as_markup(resize_keyboard=True))
+1 урок: 8:30 - 9:15
+перемена: 9:15 - 9:25 (10 минут)
+2 урок: 9:25 - 10:10
+перемена: 10:10 - 10:30 (20 минут)
+3 урок: 10:30 - 11:15
+перемена: 11:15 - 11:35 (20 минут)
+4 урок: 11:35 - 12:20
+перемена 12:20 - 12:30 (10 минут)
+5 урок: 12:30 - 13:15
+перемена: 13:15 - 13:30 (15 минут)
+6 урок: 13:30 - 14:15
+перемена: 14:15 - 14:30 (15 минут)
+7 урок: 14:30 - 15:15
+перемена: 15:15 - 15:45 (30 минут)
+далее внеурочная деятельность''', reply_markup=kb.as_markup(resize_keyboard=True))
+
+
+
+async def lessons(message: Message):
+
+    kb = ReplyKeyboardBuilder()
+
+    back_button = KeyboardButton(text='Назад ↩️')
+
+    kb.add(back_button)
+
+    await message.answer('В каком вы классе?', reply_markup=kb.as_markup(resize_keyboard=True))
+
+
+
 
 
 
@@ -68,7 +83,8 @@ async def lessons(message: Message):
 
 def register_handlers_school():
     dp.message.register(school, F.text == 'Школа 🏫')
-    dp.message.register(lessons, F.text == 'Расписание звонков 🔔')
+    dp.message.register(rings, F.text == 'Расписание звонков 🔔')
+    dp.message.register(lessons, F.text == 'Расписание уроков 📆')
 
 
 
