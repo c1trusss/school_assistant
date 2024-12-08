@@ -77,7 +77,7 @@ async def poll():
 
                 act = Action(action["name"])
                 plt.plot()
-                plt.bar(['За', 'Против'], [len(action.votes_favor), len(action.votes_against)])
+                plt.bar(['За', 'Против'], [len(act.votes_favor), len(act.votes_against)])
                 plt.show()
 
                 message = (f'Голосование завершено!\n\n'
@@ -87,7 +87,7 @@ async def poll():
                            f'Контакт для связи: {act.contact}\n\n'
                            f'Голоса: За - ')
 
-                print('Голосование завершено!')
+                print(message)
         for petition in get_active_actions('petitions'):
             if datetime.strptime(petition["end"], '%d-%m-%Y %H:%M:%S') < datetime.now():
                 change_status('petition', petition["name"], 'in progress')
