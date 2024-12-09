@@ -17,9 +17,9 @@ async def school(message: Message):
         lessons_button,
         rings_button,
         food_button,
-        width=2
+        main_menu_button,
+        width=1
     )
-    keyboard.row(main_menu_button)
 
     await message.answer(
         'Это раздел с жизнью школы. Здесь вы можете узнать расписание уроков, звонков, а так же меню '
@@ -28,7 +28,7 @@ async def school(message: Message):
     )
 
 
-async def lessons(message: Message):
+async def rings(message: Message):
 
     kb = ReplyKeyboardBuilder()
 
@@ -56,9 +56,156 @@ async def lessons(message: Message):
 далее внеурочная деятельность''', reply_markup=kb.as_markup(resize_keyboard=True))
 
 
+
+async def lessons(message: Message):
+
+    kb = ReplyKeyboardBuilder()
+
+    back_button = KeyboardButton(text='Назад ↩️')
+
+    kb.add(back_button)
+
+    await message.answer('В каком вы классе?', reply_markup=kb.as_markup(resize_keyboard=True))
+
+    kb1 = ReplyKeyboardBuilder()
+
+    back_button1 = KeyboardButton(text='Назад ↩️')
+    kl5 = KeyboardButton(text='5')
+    kl6 = KeyboardButton(text='6')
+    kl7 = KeyboardButton(text='7')
+    kl8 = KeyboardButton(text='8')
+    kl9 = KeyboardButton(text='9')
+    kl10 = KeyboardButton(text='10')
+    kl11 = KeyboardButton(text='11')
+
+    kb1.add(back_button1, kl5, kl6, kl7, kl8, kl9, kl10, kl11)
+
+    await message.answer('Выберите букву класса:', reply_markup=kb.as_markup(resize_keyboard=True))
+
+
+
+
+async def main_menu(message: Message):
+    kb = ReplyKeyboardBuilder()
+
+    back_button = KeyboardButton(text='Назад ↩️')
+
+    kb.add(back_button)
+
+    await message.answer('Здесь вы можете ознакомиться с меню столовой.', reply_markup=kb.as_markup(resize_keyboard=True))
+
+    await message.answer('Выберите день недели:', reply_markup=kb.as_markup(resize_keyboard=True))
+
+    kb1 = ReplyKeyboardBuilder()
+
+    back_button1 = KeyboardButton(text='Назад ↩️')
+    monday = KeyboardButton(text='Понедельник')
+    tuesday = KeyboardButton(text='Вторник')
+    wednesday = KeyboardButton(text='Среда')
+    thursday = KeyboardButton(text='Четверг')
+    friday = KeyboardButton(text='Пятница')
+
+    kb1.add(back_button1, monday, tuesday, wednesday, thursday, friday)
+
+    async def monday(message1: Message):
+        kb_ = ReplyKeyboardBuilder()
+
+        back_button_ = KeyboardButton(text='Назад ↩️')
+
+        kb_.add(back_button_)
+
+        await message1.answer(f'''
+Нечётная неделя:
+''', reply_markup=kb_.as_markup(resize_keyboard=True))
+
+        await message1.answer(f'''
+Чётная неделя:
+''', reply_markup=kb_.as_markup(resize_keyboard=True))
+
+
+
+
+    async def tuesday(message1: Message):
+        kb_ = ReplyKeyboardBuilder()
+
+        back_button_ = KeyboardButton(text='Назад ↩️')
+
+        kb_.add(back_button_)
+
+        await message1.answer(f'''
+Нечётная неделя:
+''', reply_markup=kb_.as_markup(resize_keyboard=True))
+
+        await message1.answer(f'''
+Чётная неделя:
+''', reply_markup=kb_.as_markup(resize_keyboard=True))
+
+
+
+    async def wednesday(message1: Message):
+        kb_ = ReplyKeyboardBuilder()
+
+        back_button_ = KeyboardButton(text='Назад ↩️')
+
+        kb_.add(back_button_)
+
+        await message1.answer(f'''
+Нечётная неделя:
+''', reply_markup=kb_.as_markup(resize_keyboard=True))
+
+        await message1.answer(f'''
+Чётная неделя:
+''', reply_markup=kb_.as_markup(resize_keyboard=True))
+
+
+
+
+    async def thursday(message1: Message):
+        kb_ = ReplyKeyboardBuilder()
+
+        back_button_ = KeyboardButton(text='Назад ↩️')
+
+        kb_.add(back_button_)
+
+        await message1.answer(f'''
+Нечётная неделя:
+''', reply_markup=kb_.as_markup(resize_keyboard=True))
+
+        await message1.answer(f'''
+Чётная неделя:
+''', reply_markup=kb_.as_markup(resize_keyboard=True))
+
+
+
+
+    async def friday(message1: Message):
+        kb_ = ReplyKeyboardBuilder()
+
+        back_button_ = KeyboardButton(text='Назад ↩️')
+
+        kb_.add(back_button_)
+
+        await message1.answer(f'''
+Нечётная неделя:
+''', reply_markup=kb_.as_markup(resize_keyboard=True))
+
+        await message1.answer(f'''
+Чётная неделя:
+''', reply_markup=kb_.as_markup(resize_keyboard=True))
+
+
+
 def register_handlers_school():
     dp.message.register(school, F.text == 'Школа 🏫')
-    dp.message.register(lessons, F.text == 'Расписание звонков 🔔')
+    dp.message.register(rings, F.text == 'Расписание звонков 🔔')
+    dp.message.register(lessons, F.text == 'Расписание уроков 📆')
+    dp.message.register(main_menu, F.text == 'Столовая 🍽️')
+    dp.message.register(monday, F.text == 'Понедельник')
+    dp.message.register(tuesday, F.text == 'Вторник')
+    dp.message.register(wednesday, F.text == 'Среда')
+    dp.message.register(thursday, F.text == 'Четверг')
+    dp.message.register(friday, F.text == 'Пятница')
+
 
 
 
