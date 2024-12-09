@@ -70,129 +70,103 @@ async def lessons(message: Message):
     kb1 = ReplyKeyboardBuilder()
 
     back_button1 = KeyboardButton(text='Назад ↩️')
-    kl5 = KeyboardButton(text='5')
-    kl6 = KeyboardButton(text='6')
-    kl7 = KeyboardButton(text='7')
-    kl8 = KeyboardButton(text='8')
-    kl9 = KeyboardButton(text='9')
-    kl10 = KeyboardButton(text='10')
-    kl11 = KeyboardButton(text='11')
+    buttons = [KeyboardButton(text=str(i)) for i in range(5, 12)]
 
-    kb1.add(back_button1, kl5, kl6, kl7, kl8, kl9, kl10, kl11)
+    kb1.add(back_button1, *buttons)
 
     await message.answer('Выберите букву класса:', reply_markup=kb.as_markup(resize_keyboard=True))
 
 
-
-
 async def main_menu(message: Message):
+
+    await message.answer('Здесь вы можете ознакомиться с меню столовой.')
+
     kb = ReplyKeyboardBuilder()
-
-    back_button = KeyboardButton(text='Назад ↩️')
-
-    kb.add(back_button)
-
-    await message.answer('Здесь вы можете ознакомиться с меню столовой.', reply_markup=kb.as_markup(resize_keyboard=True))
+    buttons_text = ['Назад ↩️', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница']
+    buttons = [KeyboardButton(text=btn_text) for btn_text in buttons_text]
+    kb.add(*buttons)
 
     await message.answer('Выберите день недели:', reply_markup=kb.as_markup(resize_keyboard=True))
 
-    kb1 = ReplyKeyboardBuilder()
 
-    back_button1 = KeyboardButton(text='Назад ↩️')
-    monday = KeyboardButton(text='Понедельник')
-    tuesday = KeyboardButton(text='Вторник')
-    wednesday = KeyboardButton(text='Среда')
-    thursday = KeyboardButton(text='Четверг')
-    friday = KeyboardButton(text='Пятница')
+async def monday(message1: Message):
+    kb_ = ReplyKeyboardBuilder()
 
-    kb1.add(back_button1, monday, tuesday, wednesday, thursday, friday)
+    back_button_ = KeyboardButton(text='Назад ↩️')
 
-    async def monday(message1: Message):
-        kb_ = ReplyKeyboardBuilder()
+    kb_.add(back_button_)
 
-        back_button_ = KeyboardButton(text='Назад ↩️')
-
-        kb_.add(back_button_)
-
-        await message1.answer(f'''
+    await message1.answer(f'''
 Нечётная неделя:
 ''', reply_markup=kb_.as_markup(resize_keyboard=True))
 
-        await message1.answer(f'''
+    await message1.answer(f'''
 Чётная неделя:
 ''', reply_markup=kb_.as_markup(resize_keyboard=True))
 
 
+async def tuesday(message1: Message):
+    kb_ = ReplyKeyboardBuilder()
 
+    back_button_ = KeyboardButton(text='Назад ↩️')
 
-    async def tuesday(message1: Message):
-        kb_ = ReplyKeyboardBuilder()
+    kb_.add(back_button_)
 
-        back_button_ = KeyboardButton(text='Назад ↩️')
-
-        kb_.add(back_button_)
-
-        await message1.answer(f'''
+    await message1.answer(f'''
 Нечётная неделя:
 ''', reply_markup=kb_.as_markup(resize_keyboard=True))
 
-        await message1.answer(f'''
+    await message1.answer(f'''
 Чётная неделя:
 ''', reply_markup=kb_.as_markup(resize_keyboard=True))
 
 
+async def wednesday(message1: Message):
+    kb_ = ReplyKeyboardBuilder()
 
-    async def wednesday(message1: Message):
-        kb_ = ReplyKeyboardBuilder()
+    back_button_ = KeyboardButton(text='Назад ↩️')
 
-        back_button_ = KeyboardButton(text='Назад ↩️')
+    kb_.add(back_button_)
 
-        kb_.add(back_button_)
-
-        await message1.answer(f'''
+    await message1.answer(f'''
 Нечётная неделя:
 ''', reply_markup=kb_.as_markup(resize_keyboard=True))
 
-        await message1.answer(f'''
+    await message1.answer(f'''
 Чётная неделя:
 ''', reply_markup=kb_.as_markup(resize_keyboard=True))
 
 
+async def thursday(message1: Message):
+    kb_ = ReplyKeyboardBuilder()
 
+    back_button_ = KeyboardButton(text='Назад ↩️')
 
-    async def thursday(message1: Message):
-        kb_ = ReplyKeyboardBuilder()
+    kb_.add(back_button_)
 
-        back_button_ = KeyboardButton(text='Назад ↩️')
-
-        kb_.add(back_button_)
-
-        await message1.answer(f'''
+    await message1.answer(f'''
 Нечётная неделя:
 ''', reply_markup=kb_.as_markup(resize_keyboard=True))
 
-        await message1.answer(f'''
+    await message1.answer(f'''
 Чётная неделя:
 ''', reply_markup=kb_.as_markup(resize_keyboard=True))
 
 
+async def friday(message1: Message):
+    kb_ = ReplyKeyboardBuilder()
 
+    back_button_ = KeyboardButton(text='Назад ↩️')
 
-    async def friday(message1: Message):
-        kb_ = ReplyKeyboardBuilder()
+    kb_.add(back_button_)
 
-        back_button_ = KeyboardButton(text='Назад ↩️')
-
-        kb_.add(back_button_)
-
-        await message1.answer(f'''
+    await message1.answer(f'''
 Нечётная неделя:
 ''', reply_markup=kb_.as_markup(resize_keyboard=True))
 
-        await message1.answer(f'''
+    await message1.answer(f'''
 Чётная неделя:
 ''', reply_markup=kb_.as_markup(resize_keyboard=True))
-
 
 
 def register_handlers_school():
