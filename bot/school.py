@@ -82,7 +82,7 @@ async def main_menu(message: Message):
     await message.answer('Здесь вы можете ознакомиться с меню столовой.')
 
     kb = ReplyKeyboardBuilder()
-    buttons_text = ['Назад ↩️', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница']
+    buttons_text = ['Школа ↩️', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница']
     buttons = [KeyboardButton(text=btn_text) for btn_text in buttons_text]
     kb.add(*buttons)
 
@@ -92,7 +92,7 @@ async def main_menu(message: Message):
 async def monday(message1: Message):
     kb_ = ReplyKeyboardBuilder()
 
-    back_button_ = KeyboardButton(text='Назад ↩️')
+    back_button_ = KeyboardButton(text='Столовая ↩️')
 
     kb_.add(back_button_)
 
@@ -122,7 +122,7 @@ async def monday(message1: Message):
 async def tuesday(message1: Message):
     kb_ = ReplyKeyboardBuilder()
 
-    back_button_ = KeyboardButton(text='Назад ↩️')
+    back_button_ = KeyboardButton(text='Столовая ↩️')
 
     kb_.add(back_button_)
 
@@ -152,7 +152,7 @@ async def tuesday(message1: Message):
 async def wednesday(message1: Message):
     kb_ = ReplyKeyboardBuilder()
 
-    back_button_ = KeyboardButton(text='Назад ↩️')
+    back_button_ = KeyboardButton(text='Столовая ↩️')
 
     kb_.add(back_button_)
 
@@ -187,7 +187,7 @@ async def wednesday(message1: Message):
 async def thursday(message1: Message):
     kb_ = ReplyKeyboardBuilder()
 
-    back_button_ = KeyboardButton(text='Назад ↩️')
+    back_button_ = KeyboardButton(text='Столовая ↩️')
 
     kb_.add(back_button_)
 
@@ -222,7 +222,7 @@ async def thursday(message1: Message):
 async def friday(message1: Message):
     kb_ = ReplyKeyboardBuilder()
 
-    back_button_ = KeyboardButton(text='Назад ↩️')
+    back_button_ = KeyboardButton(text='Столовая ↩️')
 
     kb_.add(back_button_)
 
@@ -262,7 +262,8 @@ def register_handlers_school():
     dp.message.register(wednesday, F.text == 'Среда')
     dp.message.register(thursday, F.text == 'Четверг')
     dp.message.register(friday, F.text == 'Пятница')
-
+    dp.message.register(main_menu, F.text == 'Столовая ↩️')
+    dp.message.register(school, F.text == 'Школа ↩️')
 
 
 
