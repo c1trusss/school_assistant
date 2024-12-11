@@ -1,27 +1,19 @@
 import asyncio
 from datetime import datetime
-import json
 import logging
-from time import time, sleep
-import threading
 from matplotlib import pyplot as plt
 
-from aiogram import Bot, Dispatcher, F
-from aiogram.client.default import DefaultBotProperties
 from aiogram.filters import StateFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.types import *
-from aiogram.enums.parse_mode import ParseMode
-from aiogram.utils.keyboard import ReplyKeyboardBuilder
 from aiogram.fsm.state import default_state
 
 from actions import register_handlers_actions
 from admin import add_user, register_handlers_admin, get_active_actions, change_status
 from bot import bot, dp
 from models import Action
-from config import TOKEN
 from keyboards import *
-from petitions import register_handlers_petitions
+from account import register_handlers_account
 from school import register_handlers_school
 
 
@@ -62,7 +54,7 @@ register_handlers_admin()
 register_handlers_actions()
 
 # Петиции
-register_handlers_petitions()
+register_handlers_actions()
 
 # Школа
 register_handlers_school()
@@ -71,7 +63,7 @@ register_handlers_school()
 async def poll():
     while 1:
         message = f'Голосование завершено! '
-        for action in get_active_actions('actions'):
+        for action in get_active_actions():
             if datetime.strptime(action["end"], '%d-%m-%Y %H:%M:%S') < datetime.now():
                 change_status('action', action["name"], 'in progress')
 
@@ -88,10 +80,6 @@ async def poll():
                            f'Голоса: За - ')
 
                 print(message)
-        for petition in get_active_actions('petitions'):
-            if datetime.strptime(petition["end"], '%d-%m-%Y %H:%M:%S') < datetime.now():
-                change_status('petition', petition["name"], 'in progress')
-                print('Голосование завершено!')
 
         await asyncio.sleep(60)
 

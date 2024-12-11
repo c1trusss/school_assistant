@@ -197,17 +197,18 @@ async def active_actions_list(feedback: Message | CallbackQuery):
         text='⬅️ Назад',
         callback_data='prev_actions'
     )
-
-    kb.row(btn_favor, btn_against, btn_next, width=2)
+    kb.row(btn_favor, btn_against, width=2)
+    if len(get_active_actions()) > 1:
+        kb.row(btn_next, width=1)
 
     current_index = 0
     if isinstance(feedback, CallbackQuery):
         current_index = int(feedback.message.text[feedback.message.text.index('(') + 1]) - 1
 
-    if not get_active_actions('actions'):
+    if not get_active_actions():
         await feedback.answer('Сейчас нет предложенных мероприятий 😔🥀‍')
     elif isinstance(feedback, Message):
-        action_list = get_active_actions('actions')
+        action_list = get_active_actions()
         action = Action(action_list[0]["name"])
 
         action_info = f'''<b>{action.name}</b> (1/{len(action_list)})
@@ -227,7 +228,7 @@ async def active_actions_list(feedback: Message | CallbackQuery):
 
             current_index -= 1
 
-            action_list = get_active_actions('actions')
+            action_list = get_active_actions()
             action = Action(action_list[current_index]["name"])
 
             action_info = f'''<b>{action.name}</b> ({current_index + 1}/{len(action_list)})
@@ -238,11 +239,11 @@ async def active_actions_list(feedback: Message | CallbackQuery):
 
             kb = InlineKeyboardBuilder()
 
-            if len(get_active_actions('actions')) == 1:
+            if len(get_active_actions()) == 1:
                 kb.row(btn_favor, btn_against, width=2)
             elif current_index == 0:
                 kb.row(btn_favor, btn_against, btn_next, width=2)
-            elif current_index == len(get_active_actions('actions')) - 1:
+            elif current_index == len(get_active_actions()) - 1:
                 kb.row(btn_favor, btn_against, btn_prev, width=2)
             else:
                 kb.row(btn_favor, btn_against, btn_prev, btn_next, width=2)
@@ -256,7 +257,7 @@ async def active_actions_list(feedback: Message | CallbackQuery):
 
             current_index += 1
 
-            action_list = get_active_actions('actions')
+            action_list = get_active_actions()
 
             action = Action(action_list[current_index]["name"])
 
@@ -268,11 +269,11 @@ async def active_actions_list(feedback: Message | CallbackQuery):
 
             kb = InlineKeyboardBuilder()
 
-            if len(get_active_actions('actions')) == 1:
+            if len(get_active_actions()) == 1:
                 kb.row(btn_favor, btn_against, width=2)
             elif current_index == 0:
                 kb.row(btn_favor, btn_against, btn_next, width=2)
-            elif current_index == len(get_active_actions('actions')) - 1:
+            elif current_index == len(get_active_actions()) - 1:
                 kb.row(btn_favor, btn_against, btn_prev, width=2)
             else:
                 kb.row(btn_favor, btn_against, btn_prev, btn_next, width=2)
@@ -292,7 +293,7 @@ async def vote_action(call: CallbackQuery):
     name = call.message.text.split('(')[0].strip()
     set_vote('actions', name, call.from_user.id, vote=vote)
 
-    action_list = get_active_actions('actions')
+    action_list = get_active_actions()
     current_index = int(call.message.text[call.message.text.index('(') + 1]) - 1
     action = Action(action_list[current_index]["name"])
 
@@ -318,11 +319,11 @@ async def vote_action(call: CallbackQuery):
 
     kb = InlineKeyboardBuilder()
 
-    if len(get_active_actions('actions')) == 1:
+    if len(get_active_actions()) == 1:
         kb.row(btn_favor, btn_against, width=2)
     elif current_index == 0:
         kb.row(btn_favor, btn_against, btn_next, width=2)
-    elif current_index == len(get_active_actions('actions')) - 1:
+    elif current_index == len(get_active_actions()) - 1:
         kb.row(btn_favor, btn_against, btn_prev, width=2)
     else:
         kb.row(btn_favor, btn_against, btn_prev, btn_next, width=2)

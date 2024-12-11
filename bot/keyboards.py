@@ -6,13 +6,13 @@ def main_menu_keyboard():
 
     school_button = KeyboardButton(text='Школа 🏫')
     actions_button = KeyboardButton(text='Мероприятия 📌')
-    petitions_button = KeyboardButton(text='Петиции 📝')
+    account_button = KeyboardButton(text='Личный кабинет 👤')
 
     keyboard = ReplyKeyboardBuilder()
     keyboard.row(
         school_button,
         actions_button,
-        petitions_button,
+        account_button,
         width=1
     )
 

@@ -5,13 +5,7 @@ from aiogram.utils.keyboard import ReplyKeyboardBuilder
 from bot import dp
 
 import asyncio
-import sqlite3
 from datetime import datetime
-import json
-import logging
-from pprint import pprint
-import os
-from hashlib import md5
 
 import aiogram
 from aiogram import Bot, Dispatcher
@@ -36,10 +30,11 @@ from webdriver_manager.chrome import ChromeDriverManager
 from cryptography.fernet import Fernet
 
 from models import *
+from config import KEY
 
 
 key = Fernet.generate_key()
-cipher_suite = Fernet(key)
+cipher_suite = Fernet(KEY)
 
 SCHEDULE = {
     0: [('Разговоры о важном', '8:30', '9:15'),
@@ -89,12 +84,15 @@ class RegisterStatesGroup(StatesGroup):
     password = State()
 
 
-@dp.message(CommandStart())
-async def start(message: Message):
-    await message.answer(f'Привет! Чтобы воспользоваться ботом, открой меню внизу и выбери нужную команду')
+@dp.message(lambda msg: msg.text == "Личный кабинет 👤")
+async def user_cabinet_command(message: Message):
 
-    id = message.from_user.id
-    username = message.from_user.username
+    kb = ReplyKeyboardBuilder()
+
+    buttons = [KeyboardButton(text=text) for text in ("Домашние задания", "Назад ↩️")]
+    kb.row(*buttons, width=1)
+
+    await message.answer('Вы вошли в личный кабинет', reply_markup=kb.as_markup(resize_keyboard=True))
 
 
 @dp.message(Command('schedule'))
@@ -155,11 +153,7 @@ async def next_lesson_command(message: Message):
 async def load_hw_command(message: Message):
 
     driver = create_driver()
-
-    if driver.session_id is not None:
-        await message.answer('<b>Процесс уже запущен! Подождите пару минут</b>')
-        driver.quit()
-        return
+    user = User(message.from_user.id)
 
     msg = await message.answer('<b>Информация загружается...</b>')
 
@@ -179,7 +173,11 @@ async def load_hw_command(message: Message):
             await asyncio.sleep(5)
 
         await msg.edit_text('<b>Авторизовываюсь...</b>')
-        driver.find_element(By.ID, "login").send_keys("+79683301537")
+
+        login = user.login
+        password = cipher_suite.decrypt(user.password_hash).decode('utf8')
+
+        driver.find_element(By.ID, "login").send_keys(login)
         driver.find_element(By.ID, "password").send_keys(password)
         driver.find_element(By.ID, "bind").click()
         await asyncio.sleep(18)
@@ -191,6 +189,9 @@ async def load_hw_command(message: Message):
             for file in files:
                 file_path = os.path.join(root, file)
                 os.remove(file_path)
+
+        with open("homeworks.json", 'r', encoding='utf-8') as file:
+            data = json.load(file)
 
         await msg.edit_text('<b>Открываю домашние задания...</b>')
         driver.save_screenshot(r"C:\Users\mythi\PycharmProjects\pythonProject\venv\screenshot1.png")
@@ -253,8 +254,9 @@ async def load_hw_command(message: Message):
 
             all_homeworks[hw_date] = homeworks
 
+        data[str(message.from_user.id)] = all_homeworks
         with open("homeworks.json", "w", encoding='utf-8') as outfile:
-            json.dump(all_homeworks, outfile, indent=4, ensure_ascii=False)
+            json.dump(data, outfile, indent=4, ensure_ascii=False)
 
         await msg.edit_text("✅ <b>Готово! Домашние задания загружены!</b>")
 
@@ -266,7 +268,10 @@ async def load_hw_command(message: Message):
 
 
 @dp.message(Command('homework'))
+@dp.message(lambda msg: msg.text == "Домашние задания")
 async def homework_command(message: Message):
+
+    user = User(message.from_user.id)
     months = [
         'января',
         'февраля',
@@ -283,7 +288,7 @@ async def homework_command(message: Message):
     ]
 
     with open("homeworks.json", "r", encoding='utf-8') as file:
-        data = json.load(file)
+        data = json.load(file)[str(user.id)]
 
         string = f'<b>Последнее обновление:</b> {data["last-update"]}'
 
@@ -326,6 +331,9 @@ async def handle_login(message: Message, state: FSMContext):
 
 @dp.message(StateFilter(RegisterStatesGroup.password))
 async def handle_password(message: Message, state: FSMContext):
+
+    await message.answer("Подождите минутку, проверяю по базе пользователей...")
+
     await state.update_data(password=message.text)
     uid = message.from_user.id
 
@@ -358,9 +366,8 @@ async def handle_password(message: Message, state: FSMContext):
         connection = sqlite3.connect("school.db")
         cursor = connection.cursor()
         cursor.execute("UPDATE Users SET (login, password) = (?,?) WHERE id = ?", (login, password_encrypt, uid))
-
-    connection.commit()
-    connection.close()
+        connection.commit()
+        connection.close()
     driver.quit()
 
 
@@ -403,5 +410,11 @@ async def handle_subject(message: Message, state: FSMContext):
     await message.answer(f"<b>Предметы добавлены в черный список:</b>\n\n{subjects}")
 
 
-def register_handlers_petitions():
-    dp.message.register(petitions, F.text == 'Петиции 📝')
+def register_handlers_account():
+    dp.message.register(schedule_command, Command('schedule'))
+    dp.message.register(next_lesson_command, Command('next_lesson'))
+    dp.message.register(load_hw_command, Command('load_homework'))
+    dp.message.register(homework_command, Command('homework'))
+    dp.message.register(registration, Command('register'))
+    dp.message.register(get_data, Command('gd'))
+    dp.message.register(files_blacklist, Command('files_blacklist'))

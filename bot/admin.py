@@ -1,3 +1,4 @@
+import sqlite3
 from datetime import datetime
 import json
 from typing import Literal
@@ -44,6 +45,16 @@ def add_user(id: int, name: str) -> bool:
     with open("users.json", 'w', encoding='utf8') as outfile:
         json.dump(data, outfile, indent=2, ensure_ascii=False)
 
+    connection = sqlite3.connect("school.db")
+    cursor = connection.cursor()
+    try:
+        cursor.execute("INSERT INTO Users (id, username) VALUES (?, ?)", (id, name))
+    except sqlite3.IntegrityError:
+        pass
+
+    connection.commit()
+    connection.close()
+
     return user_exist
 
 
@@ -78,16 +89,13 @@ def change_status(file_type: Literal['action', 'petition'], name: str, status: s
         json.dump(data, outfile, indent=2, ensure_ascii=False)
 
 
-def get_active_actions(file_type: Literal['actions', 'petitions']) -> list:
+def get_active_actions() -> list:
 
     """
-    :param file_type: тип активности
     :return: Список активных мероприятий
     """
 
-    file_name = f'{file_type}.json'
-
-    with open(file_name, 'r', encoding='utf-8') as file:
+    with open('actions.json', 'r', encoding='utf-8') as file:
         data = json.load(file)
 
     new_data = []
