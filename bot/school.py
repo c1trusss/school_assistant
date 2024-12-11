@@ -1,8 +1,11 @@
+import re
+
 from aiogram import F
 from aiogram.types import *
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
 from bot import dp
+from config import schedules
 
 
 async def school(message: Message):
@@ -61,20 +64,12 @@ async def lessons(message: Message):
 
     kb = ReplyKeyboardBuilder()
 
-    back_button = KeyboardButton(text='Назад ↩️')
+    back_button = KeyboardButton(text='Школа ↩️')
 
     kb.add(back_button)
 
-    await message.answer('В каком вы классе?', reply_markup=kb.as_markup(resize_keyboard=True))
+    await message.answer('В каком вы классе? Укажите в формате "11Д"', reply_markup=kb.as_markup(resize_keyboard=True))
 
-    kb1 = ReplyKeyboardBuilder()
-
-    back_button1 = KeyboardButton(text='Назад ↩️')
-    buttons = [KeyboardButton(text=str(i)) for i in range(5, 12)]
-
-    kb1.add(back_button1, *buttons)
-
-    await message.answer('Выберите букву класса:', reply_markup=kb.as_markup(resize_keyboard=True))
 
 
 async def main_menu(message: Message):
@@ -89,23 +84,20 @@ async def main_menu(message: Message):
     await message.answer('Выберите день недели:', reply_markup=kb.as_markup(resize_keyboard=True))
 
 
-async def handle_weekday(message: Message):
+async def handle_class(message: Message):
 
-    answer = ''
+    kb = ReplyKeyboardBuilder()
 
-    match message.text:
-        case "Понедельник":
-            answer = '1 варинт:\n\nЗАВТРАК:\n\nОБЕД:'
-        case "Вторник":
-            answer = '1 варинт:\n\nЗАВТРАК:\n\nОБЕД:'
-        case "Среда":
-            answer = '1 варинт:\n\nЗАВТРАК:\n\nОБЕД:'
-        case "Четверг":
-            answer = '1 варинт:\n\nЗАВТРАК:\n\nОБЕД:'
-        case "Пятница":
-            answer = '1 варинт:\n\nЗАВТРАК:\n\nОБЕД:'
+    back_button = KeyboardButton(text='Уроки ↩️')
 
-    await message.answer(answer)
+    kb.add(back_button)
+
+    answer = schedules.get(message.text)
+    answer_1 = ''
+    for k, v in answer.items():
+        answer_1 += str(k) + '\n' + str(v)
+
+    await message.answer(answer_1)
 
 
 async def monday(message1: Message):
@@ -283,6 +275,9 @@ def register_handlers_school():
     dp.message.register(friday, F.text == 'Пятница')
     dp.message.register(main_menu, F.text == 'Столовая ↩️')
     dp.message.register(school, F.text == 'Школа ↩️')
+    dp.message.register(handle_class, lambda msg: msg.text in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11Д'])
+    dp.message.register(handle_class, F.text == 'Уроки ↩️')
+    dp.message.register(lessons, F.text == 'Школа ↩️')
 
 
 
