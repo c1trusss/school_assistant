@@ -95,7 +95,7 @@ async def handle_class(message: Message):
     answer = schedules.get(message.text)
     answer_1 = ''
     for k, v in answer.items():
-        answer_1 += str(k) + '\n' + str(v)
+        answer_1 += f"{k}\n{v}"
 
     await message.answer(answer_1)
 
