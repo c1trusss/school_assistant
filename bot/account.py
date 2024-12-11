@@ -30,7 +30,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from cryptography.fernet import Fernet
 
 from models import *
-from config import KEY
+from bot_token import KEY
 
 
 key = Fernet.generate_key()
