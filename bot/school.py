@@ -89,6 +89,25 @@ async def main_menu(message: Message):
     await message.answer('Выберите день недели:', reply_markup=kb.as_markup(resize_keyboard=True))
 
 
+async def handle_weekday(message: Message):
+
+    answer = ''
+
+    match message.text:
+        case "Понедельник":
+            answer = '1 варинт:\n\nЗАВТРАК:\n\nОБЕД:'
+        case "Вторник":
+            answer = '1 варинт:\n\nЗАВТРАК:\n\nОБЕД:'
+        case "Среда":
+            answer = '1 варинт:\n\nЗАВТРАК:\n\nОБЕД:'
+        case "Четверг":
+            answer = '1 варинт:\n\nЗАВТРАК:\n\nОБЕД:'
+        case "Пятница":
+            answer = '1 варинт:\n\nЗАВТРАК:\n\nОБЕД:'
+
+    await message.answer(answer)
+
+
 async def monday(message1: Message):
     kb_ = ReplyKeyboardBuilder()
 
