@@ -97,11 +97,25 @@ async def monday(message1: Message):
     kb_.add(back_button_)
 
     await message1.answer(f'''
-Нечётная неделя:
+1 варинт:
+
+ЗАВТРАК:
+
+ОБЕД:
+
 ''', reply_markup=kb_.as_markup(resize_keyboard=True))
 
     await message1.answer(f'''
-Чётная неделя:
+2 вариант:
+
+ЗАВТРАК:
+- блинчики
+
+ОБЕД:
+- ёжики куриные
+- изделия макаронные отварные
+- чай
+- смородиновый компот
 ''', reply_markup=kb_.as_markup(resize_keyboard=True))
 
 
@@ -113,11 +127,25 @@ async def tuesday(message1: Message):
     kb_.add(back_button_)
 
     await message1.answer(f'''
-Нечётная неделя:
+1 вариант:
+
+ЗАВТРАК:
+
+ОБЕД:
 ''', reply_markup=kb_.as_markup(resize_keyboard=True))
 
     await message1.answer(f'''
-Чётная неделя:
+2 вариант:
+
+ЗАВТРАК:
+- гречка отварная
+- фрикадельки по-калининградски
+
+ОБЕД:
+- рис отварной
+- говядина по-мексикански
+- чай
+- яблочный компот
 ''', reply_markup=kb_.as_markup(resize_keyboard=True))
 
 
@@ -129,11 +157,30 @@ async def wednesday(message1: Message):
     kb_.add(back_button_)
 
     await message1.answer(f'''
-Нечётная неделя:
+1 вариант:
+
+ЗАВТРАК:
+- каша гречневая с молоком
+- круассан
+ОБЕД:
+
+- картофель отварной
+- азу по-татарски
+- чай
+- апельсиновый компот
 ''', reply_markup=kb_.as_markup(resize_keyboard=True))
 
     await message1.answer(f'''
-Чётная неделя:
+2 вариант:
+
+ЗАВТРАК:
+- омлет
+- пицца
+
+ОБЕД:
+- картофель запеченный по-домашнему
+- наггетсы
+- чай
 ''', reply_markup=kb_.as_markup(resize_keyboard=True))
 
 
@@ -145,11 +192,30 @@ async def thursday(message1: Message):
     kb_.add(back_button_)
 
     await message1.answer(f'''
-Нечётная неделя:
+1 вариант:
+
+ЗАВТРАК:
+- наггетсы
+- изделия макаронные отварные
+
+ОБЕД:
+- плов мясной
+- чай
+- клюквенный компот
 ''', reply_markup=kb_.as_markup(resize_keyboard=True))
 
     await message1.answer(f'''
-Чётная неделя:
+2 вариант:
+
+ЗАВТРАК:
+- пирожок с клубничным джемом
+- творог
+- хлопья сладкие с молоком
+
+ОБЕД:
+- пельмени отварные
+- чай
+- апельсиновый компот
 ''', reply_markup=kb_.as_markup(resize_keyboard=True))
 
 
@@ -161,11 +227,28 @@ async def friday(message1: Message):
     kb_.add(back_button_)
 
     await message1.answer(f'''
-Нечётная неделя:
+1 вариант:
+
+ЗАВТРАК:
+- запеканка из творога
+- яблоки
+
+ОБЕД:
+- гречка отварная
+- митболы
 ''', reply_markup=kb_.as_markup(resize_keyboard=True))
 
     await message1.answer(f'''
-Чётная неделя:
+2 вариант:
+
+ЗАВТРАК:
+- сырники
+- мандарин
+
+ОБЕД:
+- изделия макаронные отварные с соусом Альфредо
+- чай
+- напиток из сухофруктов
 ''', reply_markup=kb_.as_markup(resize_keyboard=True))
 
 
