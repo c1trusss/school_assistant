@@ -1,6 +1,6 @@
 from aiogram import F
 from aiogram.types import *
-from aiogram.utils.keyboard import ReplyKeyboardBuilder
+from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
 
 from bot import dp
 
@@ -149,13 +149,24 @@ async def next_lesson_command(message: Message):
                          f'({next_lesson[1]} - {next_lesson[2]})')
 
 
-@dp.message(Command('load_homework'))
-async def load_hw_command(message: Message):
+async def load_files_or_not(message: Message):
+
+    kb = InlineKeyboardBuilder()
+
+    kb.row(InlineKeyboardButton(text='Загрузить', callback_data='load'))
+    kb.row(InlineKeyboardButton(text='Не загружать', callback_data='dont_load'))
+
+    await message.answer('Загрузить прикреплённые файлы?', reply_markup=kb.as_markup())
+
+
+async def load_hw_command(call: CallbackQuery):
+
+    print('loading')
 
     driver = create_driver()
-    user = User(message.from_user.id)
+    user = User(call.from_user.id)
 
-    msg = await message.answer('<b>Информация загружается...</b>')
+    msg = await call.message.answer('<b>Информация загружается...</b>')
 
     driver.get("https://school.mos.ru/")
     driver.set_window_size(1920, 1080)
@@ -221,40 +232,41 @@ async def load_hw_command(message: Message):
                 lesson = day.find_elements(By.XPATH, ".//div[contains(@class, 'homeworksForDay')]")[i]
                 lesson_name = lesson.find_element(By.XPATH, ".//h6[contains(@class, 'DSXOGdoSiFGKohRuaDDx')]").text
                 lesson_hw = lesson.find_element(By.XPATH, ".//div[contains(@class, 'descriptionBlock')]").text
-                with open("blacklist.txt", 'r', encoding='cp1251') as f:
-                    lines = f.readlines()
-                    if lesson_name not in list(map(str.strip, lines)):
-                        try:
-                            await msg.edit_text(f'<b>Проверяю ДЗ на наличие файлов... ({hw_date}, {lesson_name})</b>')
-                        except aiogram.exceptions.TelegramBadRequest:
-                            pass
-                        lesson.find_element(By.XPATH, ".//div[contains(@class, 'arrowLargeRightIcon')]").click()
-                        await asyncio.sleep(4)
-                        driver.find_element(By.XPATH, ".//div[contains(@class, '15i5qxa')]").click()
-                        await asyncio.sleep(2)
-                        driver.find_element(By.XPATH, ".//div[contains(@class, 'arrowIconBlock')]").click()
-                        await asyncio.sleep(2)
-                        try:
-                            file = driver.find_element(By.XPATH, ".//p[contains(@class, 'bv6qar')]")
-                            lesson_hw += f', file={file.text}'
-                            file.click()
-                            await asyncio.sleep(5)
-                        except NoSuchElementException:
-                            pass
-                        finally:
+                if call.data == 'load':
+                    with open("blacklist.txt", 'r', encoding='cp1251') as f:
+                        lines = f.readlines()
+                        if lesson_name not in list(map(str.strip, lines)):
+                            try:
+                                await msg.edit_text(f'<b>Проверяю ДЗ на наличие файлов... ({hw_date}, {lesson_name})</b>')
+                            except aiogram.exceptions.TelegramBadRequest:
+                                pass
+                            lesson.find_element(By.XPATH, ".//div[contains(@class, 'arrowLargeRightIcon')]").click()
+                            await asyncio.sleep(4)
+                            driver.find_element(By.XPATH, ".//div[contains(@class, '15i5qxa')]").click()
                             await asyncio.sleep(2)
-                            driver.back()
-                            WebDriverWait(driver, 10).until(
-                                EC.presence_of_element_located(
-                                    (By.XPATH, ".//div[contains(@class, 'homeworksForDay')]"))
-                            )
+                            driver.find_element(By.XPATH, ".//div[contains(@class, 'arrowIconBlock')]").click()
                             await asyncio.sleep(2)
+                            try:
+                                file = driver.find_element(By.XPATH, ".//p[contains(@class, 'bv6qar')]")
+                                lesson_hw += f', file={file.text}'
+                                file.click()
+                                await asyncio.sleep(5)
+                            except NoSuchElementException:
+                                pass
+                            finally:
+                                await asyncio.sleep(2)
+                                driver.back()
+                                WebDriverWait(driver, 10).until(
+                                    EC.presence_of_element_located(
+                                        (By.XPATH, ".//div[contains(@class, 'homeworksForDay')]"))
+                                )
+                                await asyncio.sleep(2)
 
                 homeworks[lesson_name] = lesson_hw
 
             all_homeworks[hw_date] = homeworks
 
-        data[str(message.from_user.id)] = all_homeworks
+        data[str(call.from_user.id)] = all_homeworks
         with open("homeworks.json", "w", encoding='utf-8') as outfile:
             json.dump(data, outfile, indent=4, ensure_ascii=False)
 
@@ -413,8 +425,9 @@ async def handle_subject(message: Message, state: FSMContext):
 def register_handlers_account():
     dp.message.register(schedule_command, Command('schedule'))
     dp.message.register(next_lesson_command, Command('next_lesson'))
-    dp.message.register(load_hw_command, Command('load_homework'))
-    dp.message.register(load_hw_command, F.text == 'Обновить домашние задания 🔄')
+    dp.message.register(load_files_or_not, Command('load_homework'))
+    dp.message.register(load_files_or_not, F.text == 'Обновить домашние задания 🔄')
+    dp.callback_query.register(load_hw_command, lambda call: call.data in ['load', 'dont_load'])
     dp.message.register(homework_command, Command('homework'))
     dp.message.register(registration, Command('register'))
     dp.message.register(get_data, Command('gd'))
