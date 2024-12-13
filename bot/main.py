@@ -54,7 +54,7 @@ register_handlers_admin()
 register_handlers_actions()
 
 # Петиции
-register_handlers_actions()
+register_handlers_account()
 
 # Школа
 register_handlers_school()

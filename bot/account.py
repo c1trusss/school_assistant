@@ -89,7 +89,7 @@ async def user_cabinet_command(message: Message):
 
     kb = ReplyKeyboardBuilder()
 
-    buttons = [KeyboardButton(text=text) for text in ("Домашние задания", "Назад ↩️")]
+    buttons = [KeyboardButton(text=text) for text in ("Домашние задания", "Обновить домашние задания 🔄", "Назад ↩️")]
     kb.row(*buttons, width=1)
 
     await message.answer('Вы вошли в личный кабинет', reply_markup=kb.as_markup(resize_keyboard=True))
@@ -414,6 +414,7 @@ def register_handlers_account():
     dp.message.register(schedule_command, Command('schedule'))
     dp.message.register(next_lesson_command, Command('next_lesson'))
     dp.message.register(load_hw_command, Command('load_homework'))
+    dp.message.register(load_hw_command, F.text == 'Обновить домашние задания 🔄')
     dp.message.register(homework_command, Command('homework'))
     dp.message.register(registration, Command('register'))
     dp.message.register(get_data, Command('gd'))
