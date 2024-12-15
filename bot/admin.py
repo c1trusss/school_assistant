@@ -28,27 +28,19 @@ def add_user(id: int, name: str) -> bool:
 
     user_exist = False
 
-    user = {
-        "name": name,
-        "account_created": '-'.join((str(datetime.now().date())).split('-')[::-1]),
-        "admin": "False",
-        "sub": "True",
-    }
-
-    with open("users.json", 'r', encoding='utf8') as file:
-        data = json.load(file)
-        if str(id) not in data:
-            data[str(id)] = user
-        else:
-            user_exist = True
-
-    with open("users.json", 'w', encoding='utf8') as outfile:
-        json.dump(data, outfile, indent=2, ensure_ascii=False)
+    date = '-'.join((str(datetime.now().date())).split('-')[::-1])
 
     connection = sqlite3.connect("school.db")
     cursor = connection.cursor()
     try:
-        cursor.execute("INSERT INTO Users (id, username) VALUES (?, ?)", (id, name))
+        cursor.execute("""
+        INSERT INTO Users 
+        (
+            id,
+            username,
+            created,
+            admin
+        ) VALUES (?, ?, ?, ?)""", (id, name, date, "False"))
     except sqlite3.IntegrityError:
         pass
 

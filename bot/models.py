@@ -30,16 +30,6 @@ class User:
         self.id = user_id
 
         if self.id:
-            with open('users.json', encoding='utf8') as file:
-                data = json.load(file)
-
-            user_info = data.get(str(self.id))
-
-            self.name = user_info["name"]
-            self.account_created = user_info["account_created"]
-            self.admin = eval(user_info["admin"])
-            self.sub = eval(user_info["sub"])
-
             connection = sqlite3.connect("school.db")
             cursor = connection.cursor()
             cursor.execute("SELECT * FROM Users WHERE id=?", (self.id,))
@@ -48,6 +38,8 @@ class User:
             self.login = user_data[2]
             self.password_hash = user_data[3]
             self.username = user_data[1]
+            self.created = user_data[4]
+            self.admin = user_data[5]
 
 
 class Action:
